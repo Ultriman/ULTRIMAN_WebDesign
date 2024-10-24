@@ -21,12 +21,14 @@
                 </div>
             </div>
 
-            <!-- Progress Bar di sini -->
             <div class="progress-container">
                 <progress id="budgetUsage" value="0" max="100"></progress>
                 <p id="percentageUsed">0% Used</p>
             </div>
-            <button id="logoutButton">Logout</button>
+
+            <!-- Tambahkan tombol logout dan clear data di luar header -->
+            <button id="logoutButton" class="logout-btn">&times;</button>
+            <button id="clearDataButton" class="clear-data-btn">Clear Data</button>
         </header>
 
         <main>
@@ -42,7 +44,6 @@
         </main>
     </div>
 
-    <!-- Modal untuk input transaksi -->
     <div id="transactionModal" class="modal">
         <div class="modal-content">
             <div class="modal-header">
@@ -60,14 +61,13 @@
         </div>
     </div>
 
-    <!-- Modal untuk input anggaran -->
     <div id="budgetModal" class="modal">
         <div class="modal-content">
             <div class="modal-header">
                 <h2>Set a Budget</h2>
                 <span class="close" id="closeBudgetModal">&times;</span>
             </div>
-            <input type="number" id="setBudget" placeholder="Masukkan Anggaran">
+            <input type="number" id="setBudget" placeholder="Enter a Budget">
             <button id="saveBudget">Save Budget</button>
         </div>
     </div>
