@@ -2,48 +2,49 @@
 document.addEventListener('DOMContentLoaded', () => {
     const loggedInUserEmail = localStorage.getItem('loggedInUser');
     if (!loggedInUserEmail) {
-        // Jika tidak ada pengguna yang login, arahkan ke halaman login
-        window.location.href = 'index.html';
+        window.location.href = 'login.html';
     } else {
-        // Inisialisasi halaman Finance Tracker
         initializeFinanceTracker();
     }
 });
 
-// Fungsi untuk menginisialisasi Finance Tracker
 function initializeFinanceTracker() {
     let transactions = [];
     let totalExpense = 0;
     let totalIncome = 0;
     let remainingBudget = 0;
 
-    // Ambil transaksi dari localStorage berdasarkan pengguna
     const loggedInUserEmail = localStorage.getItem('loggedInUser');
     const userTransactions = JSON.parse(localStorage.getItem(`transactions_${loggedInUserEmail}`)) || [];
     const userBudget = Number(localStorage.getItem(`budget_${loggedInUserEmail}`)) || 0;
     remainingBudget = userBudget;
-
     transactions = userTransactions;
 
     updateTransactionList();
     updateBalance();
 
-    // Event untuk logout
     document.getElementById('logoutButton').addEventListener('click', function() {
-        // Arahkan ke halaman login setelah logout
-        window.location.href = 'login.html';  // Ganti dengan path file login kamu
+        window.location.href = 'login.html';
     });
 
-    // Event untuk menyimpan anggaran
-    const budgetModal = document.getElementById('budgetModal');
-    const btnShowBudgetModal = document.getElementById('showBudgetModal');
-    const btnCloseBudgetModal = document.getElementById('closeBudgetModal');
+    document.getElementById('clearDataButton').addEventListener('click', function() {
+        // Konfirmasi sebelum menghapus data
+        if (confirm('Are you sure you want to clear all data?')) {
+            localStorage.removeItem(`transactions_${loggedInUserEmail}`);
+            localStorage.removeItem(`budget_${loggedInUserEmail}`);
+            transactions = [];
+            remainingBudget = 0;
+            updateTransactionList();
+            updateBalance();
+            alert('Data cleared successfully!');
+        }
+    });
 
-    btnShowBudgetModal.addEventListener('click', () => {
+    const budgetModal = document.getElementById('budgetModal');
+    document.getElementById('showBudgetModal').addEventListener('click', () => {
         budgetModal.style.display = 'flex';
     });
-
-    btnCloseBudgetModal.addEventListener('click', () => {
+    document.getElementById('closeBudgetModal').addEventListener('click', () => {
         budgetModal.style.display = 'none';
     });
 
@@ -53,21 +54,16 @@ function initializeFinanceTracker() {
             remainingBudget = budget;
             localStorage.setItem(`budget_${loggedInUserEmail}`, budget);
             document.getElementById('remainingBudget').innerText = `Rp${budget}`;
-            budgetModal.style.display = 'none'; // Sembunyikan modal setelah simpan
+            budgetModal.style.display = 'none';
             updateBalance();
         }
     });
 
-    // Event untuk menambahkan transaksi
     const transactionModal = document.getElementById('transactionModal');
-    const btnShowTransactionModal = document.getElementById('showTransactionModal');
-    const btnCloseTransactionModal = document.getElementById('closeTransactionModal');
-
-    btnShowTransactionModal.addEventListener('click', () => {
+    document.getElementById('showTransactionModal').addEventListener('click', () => {
         transactionModal.style.display = 'flex';
     });
-
-    btnCloseTransactionModal.addEventListener('click', () => {
+    document.getElementById('closeTransactionModal').addEventListener('click', () => {
         transactionModal.style.display = 'none';
     });
 
@@ -81,18 +77,16 @@ function initializeFinanceTracker() {
             const transaction = { description, amount, transactionType, date };
             transactions.push(transaction);
             localStorage.setItem(`transactions_${loggedInUserEmail}`, JSON.stringify(transactions));
-            transactionModal.style.display = 'none'; // Tutup modal setelah menambahkan transaksi
+            transactionModal.style.display = 'none';
             addTransactionToList(transaction);
             updateBalance();
 
-            // Reset form
             document.getElementById('description').value = '';
             document.getElementById('amount').value = '';
             document.getElementById('date').value = '';
         }
     });
 
-    // Update saldo dan sisa anggaran
     function updateBalance() {
         totalExpense = 0;
         totalIncome = 0;
@@ -102,7 +96,7 @@ function initializeFinanceTracker() {
                 totalExpense += transaction.amount;
             } else if (transaction.transactionType === 'pemasukan') {
                 totalIncome += transaction.amount;
-                remainingBudget += transaction.amount; // Tambahkan pemasukan ke anggaran
+                remainingBudget += transaction.amount;
             }
         });
 
@@ -111,7 +105,6 @@ function initializeFinanceTracker() {
         document.getElementById('totalBalance').innerText = `Rp${totalExpense}`;
         document.getElementById('remainingBudget').innerText = `Rp${remaining >= 0 ? remaining : 0}`;
 
-        // Update progress bar
         const usagePercentage = remainingBudget > 0 ? (totalExpense / remainingBudget) * 100 : 0;
         const percentage = usagePercentage > 100 ? 100 : usagePercentage;
 
@@ -119,7 +112,6 @@ function initializeFinanceTracker() {
         document.getElementById('percentageUsed').innerText = `${percentage.toFixed(2)}% Used`;
     }
 
-    // Update daftar transaksi
     function updateTransactionList() {
         const transactionList = document.getElementById('transactionList');
         transactionList.innerHTML = '';
@@ -129,14 +121,12 @@ function initializeFinanceTracker() {
         });
     }
 
-    // Menambahkan transaksi ke daftar di DOM
     function addTransactionToList(transaction) {
         const transactionList = document.getElementById('transactionList');
         const listItem = document.createElement('li');
-        listItem.innerHTML = `
-            <span>${transaction.description} (${transaction.date})</span>
-            <span>${transaction.transactionType === 'pengeluaran' ? '-' : '+'}Rp${transaction.amount}</span>
-        `;
+        listItem.innerHTML = 
+            `<span>${transaction.description} (${transaction.date})</span>
+            <span>${transaction.transactionType === 'pengeluaran' ? '-' : '+'}Rp${transaction.amount}</span>`;
         transactionList.appendChild(listItem);
     }
 }
