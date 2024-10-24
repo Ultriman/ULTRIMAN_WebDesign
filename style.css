@@ -19,6 +19,7 @@ body {
     background-color: #fff;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     border-radius: 10px;
+    position: relative;
 }
 
 header {
@@ -209,3 +210,92 @@ button:hover {
         flex-direction: column;
     }
 }
+
+.logout-btn {
+    position: absolute;
+    top: 0px;
+    right: 20px;
+    background-color: transparent;
+    color: #dc3545;
+    font-size: 2rem;
+    border: none;
+    cursor: pointer;
+}
+
+.logout-btn:hover {
+    color: #ff0000;
+}
+
+/* Reset */
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: 'Roboto', sans-serif;
+    background-color: #f8f9fa;
+    color: #333;
+    line-height: 1.6;
+}
+
+.container {
+    width: 100%;
+    max-width: 900px;
+    margin: 40px auto;
+    padding: 20px;
+    background-color: #fff;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    border-radius: 10px;
+    position: relative;
+}
+
+header {
+    position: relative;
+    text-align: center;
+    padding-bottom: 20px;
+    border-bottom: 1px solid #ddd;
+}
+
+header h1 {
+    font-size: 2rem;
+    color: #007bff;
+}
+
+/* Styling untuk tombol Clear Data */
+.clear-data-btn {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    background-color: #ff0707;
+    color: white;
+    padding: 8px 15px;
+    border: none;
+    border-radius: 5px;
+    font-size: 0.9rem;
+    cursor: pointer;
+}
+
+.clear-data-btn:hover {
+    background-color: #e0a800;
+}
+
+/* Other styles... */
+.wallet-info {
+    display: flex;
+    justify-content: space-between;
+    margin: 20px 0;
+}
+
+.wallet-info div {
+    flex: 1;
+    background-color: #f1f1f1;
+    padding: 20px;
+    margin: 0 10px;
+    border-radius: 8px;
+    text-align: center;
+}
+
+/* Rest of your CSS styles... */
+
